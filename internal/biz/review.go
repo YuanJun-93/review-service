@@ -14,6 +14,7 @@ type ReviewRepo interface {
 	GetReviewByOrderID(ctx context.Context, orderID int64) ([]*model.ReviewInfo, error)
 	SaveReview(ctx context.Context, review *model.ReviewInfo) (*model.ReviewInfo, error)
 	GetReview(ctx context.Context, reviewID int64) (*model.ReviewInfo, error)
+	SaveReply(ctx context.Context, reply *model.ReviewReplyInfo) (*model.ReviewReplyInfo, error)
 }
 
 type ReviewUsecase struct {
@@ -49,4 +50,17 @@ func (uc *ReviewUsecase) CreateReview(ctx context.Context, review *model.ReviewI
 func (uc *ReviewUsecase) GetReview(ctx context.Context, reviewID int64) (*model.ReviewInfo, error) {
 	uc.log.WithContext(ctx).Debugf("[biz] GetReview, reviewID: %v", reviewID)
 	return uc.repo.GetReview(ctx, reviewID)
+}
+
+func (uc *ReviewUsecase) CreateReply(ctx context.Context, param *ReplyParam) (*model.ReviewReplyInfo, error) {
+	uc.log.WithContext(ctx).Debugf("[biz] CreateReply, param: %v", param)
+	reply := &model.ReviewReplyInfo{
+		ReplyID:   snowflake.GenID(),
+		ReviewID:  param.ReviewID,
+		StoreID:   param.StoreID,
+		Content:   param.Content,
+		PicInfo:   param.PicInfo,
+		VideoInfo: param.VideoInfo,
+	}
+	return uc.repo.SaveReply(ctx, reply)
 }

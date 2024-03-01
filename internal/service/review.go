@@ -69,6 +69,8 @@ func (s *ReviewService) AuditReview(ctx context.Context, req *pb.AuditReviewRequ
 	return &pb.AuditReviewReply{}, nil
 }
 func (s *ReviewService) ReplyReview(ctx context.Context, req *pb.ReplyReviewRequest) (*pb.ReplyReviewReply, error) {
+	fmt.Printf("[service] ReplyReview, req: %#v\n", req)
+	
 	return &pb.ReplyReviewReply{}, nil
 }
 func (s *ReviewService) AuditAppeal(ctx context.Context, req *pb.AuditAppealRequest) (*pb.AuditAppealReply, error) {
